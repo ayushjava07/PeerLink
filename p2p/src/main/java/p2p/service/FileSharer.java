@@ -29,7 +29,7 @@ public class FileSharer {
             String filePath=availablefiles.get(port);
             if(filePath==null){
                 // Code to start sharing the file at filePath on the given port
-                System.out.println("Sharing file: " + filePath + " on port: " + port);
+                System.out.println("No file found for this port: " + port);
                 return;
             } 
             try(ServerSocket serverSocket =new ServerSocket(port)){
