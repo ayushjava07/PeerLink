@@ -103,8 +103,18 @@ public class FileController {
                 if (result != null) {
                     // Save the file or handle it
                     File outputFile = new File(uploadDir, result.fileName);
+                    String filePath = uploadDir + File.separator + result.fileName;
                     try (OutputStream fos = new java.io.FileOutputStream(outputFile)) {
                         fos.write(result.fileContent);
+                    }
+                    FileSharer fileSharer = new FileSharer();
+                    int port = fileSharer.offerFile(filePath);
+                    new Thread(() -> fileSharer.startFileSharer(port)).start();
+                    String jsonResponse="{\"port\":"+port+",\"fileName\":\""+result.fileName+"\"}";
+                    headers.add("Content-Type", "application/json");
+                    exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(jsonResponse.getBytes());
                     }
                     String response = "File uploaded successfully";
                     exchange.sendResponseHeaders(200, response.getBytes().length);
