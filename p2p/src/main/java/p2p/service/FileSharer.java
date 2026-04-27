@@ -58,7 +58,7 @@ public class FileSharer {
                     // Code to send the file to the client
                     OutputStream os = clientSocket.getOutputStream();
                     String fileName = new File(filePath).getName();
-                    String header = "Content-Disposition: attachment; filename=\"" + fileName + "\"\r\n\r\n";
+                    String header = "Filename: " + fileName + "\n";
                     os.write(header.getBytes());
 
                     byte[] buffer = new byte[4096];
