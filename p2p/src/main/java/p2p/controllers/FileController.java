@@ -14,13 +14,11 @@ import com.sun.net.httpserver.HttpServer;
 import p2p.service.FileSharer;
 
 public class FileController {
-    private final FileSharer fileSharer;
     private final HttpServer server;
     private final String uploadDir;
     private final ExecutorService executorService;
 
     public FileController(int port) throws IOException {
-        this.fileSharer = new FileSharer();
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
         this.uploadDir = System.getProperty("java.io.tmpdir") + File.separator + "peerlink-uploads";
         this.executorService = Executors.newFixedThreadPool(10);
@@ -191,29 +189,27 @@ public class FileController {
         public static class ParseResult {
             public final String fileName;
             public final byte[] fileContent;
-            public final String contentType;
 
             public ParseResult(String fileName, byte[] fileContent, String contentType) {
                 this.fileName = fileName;
                 this.fileContent = fileContent;
-                this.contentType = contentType;
             }
         }
     }
-}
 
-private static int findSequence(byte[] data, byte[] sequence, int startPos) {
-    for (int i = startPos; i < data.length - sequence.length + 1; i++) {
-        boolean found = true;
-        for (int j = 0; j < sequence.length; j++) {
-            if (data[i + j] != sequence[j]) {
-                found = false;
-                break;
+    private static int findSequence(byte[] data, byte[] sequence, int startPos) {
+        for (int i = startPos; i < data.length - sequence.length + 1; i++) {
+            boolean found = true;
+            for (int j = 0; j < sequence.length; j++) {
+                if (data[i + j] != sequence[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return i;
             }
         }
-        if (found) {
-            return i;
-        }
+        return -1; // Sequence not found
     }
-    return -1; // Sequence not found
 }
