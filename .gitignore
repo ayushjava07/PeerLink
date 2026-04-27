@@ -17,7 +17,7 @@ ui/node_modules/
 ui/.next/
 ui/out/
 ui/.cache/
-ui/build/
+# ui/build/
 ui/dist/
 ui/.env
 ui/.env.local
