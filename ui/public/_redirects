@@ -1,1 +1,3 @@
+/api/upload http://localhost:8080/upload 200
+/api/download/* http://localhost:8080/download/:splat 200
 /* /index.html 200
